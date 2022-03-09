@@ -4,7 +4,6 @@ const canvasSize = 800;
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
-  loop();
   frameRate(30);
   rectMode(CENTER);
   background(50);
@@ -25,8 +24,8 @@ function draw() {
 
 function mousePressed() {
   background(50);
-  loop();
   leafs.forEach((l) => {
     l.setToInitial();
   });
+  loop();
 }

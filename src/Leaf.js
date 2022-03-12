@@ -78,7 +78,7 @@ class SubLeaf extends Leaf {
     this.width = 10;
     this.height = 10;
     this.name = name;
-    this.setToInitial();
+    this.setToInitial(x,y);
   }
 
   setToInitial(x=0, y=0) {

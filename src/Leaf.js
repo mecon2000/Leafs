@@ -3,29 +3,32 @@ const maxSteps = 50;
 let runOnce = false;
 
 class Leaf {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  constructor() {
     this.width = 35;
     this.height = 55;
     this.setToInitial();
     this.subLeafs = [];
-    this.color = {start: color("PaleGreen"), end: color("PaleGoldenrod")};
-    this.outlineColor = {start: color("Chartreuse"), end: color("DarkGreen")};
+    this.color = { start: color("PaleGreen"), end: color("PaleGoldenrod") };
+    this.outlineColor = { start: color("Chartreuse"), end: color("DarkGreen") };
+    this.stemColor = color("White");
     this.name = "master";
   }
 
-  setToInitial() {
+  setToInitial(x=0, y=0) {
     this.currentStep = maxSteps;
-    this.angle = radians(random(-45, 45));
+    this.stemAngle = radians(random(-45, -135));
+    this.leafAngle = radians(random(80, 110));
+    this.stemStart = createVector(x, y);
+
+    let v = p5.Vector.fromAngle(this.stemAngle, 50);
+    this.stemEnd = p5.Vector.add(this.stemStart, v);
   }
 
   draw() {
-    console.log (`Drawing!`);
     if (!runOnce) {
-      this.subLeafs.push(new SubLeaf("son1",38, random(-7, 7)));
-      this.subLeafs.push(new SubLeaf("son2",-38, random(-7, 7)));
-      this.subLeafs.push(new SubLeaf("son3",random(-7, 7), -50));
+      this.subLeafs.push(new SubLeaf("son1", 38, random(-7, 7)));
+      this.subLeafs.push(new SubLeaf("son2", -38, random(-7, 7)));
+      this.subLeafs.push(new SubLeaf("son3", random(-7, 7), -50));
       runOnce = true;
     }
 
@@ -36,20 +39,23 @@ class Leaf {
       return;
     }
 
+    strokeWeight(2);
+    stroke(this.stemColor);
+    line(this.stemStart.x, this.stemStart.y, this.stemEnd.x, this.stemEnd.y);
+
     push();
-    translate(width / 2 + this.x, height / 2 + this.y);
-    rotate(this.angle);
+    translate(this.stemEnd);
+    rotate(this.stemAngle + this.leafAngle);
     rect(0, 0, this.width, this.height, 15, 15, 5, 5);
-    this.subLeafs.forEach((l) => l.draw());    
+    this.subLeafs.forEach((l) => l.draw());
     pop();
   }
 
   fadeLeaf() {
-    console.log (`${this.name}, ${this.currentStep}`);
     this.currentStep--;
     let s = initialStroke * (this.currentStep / maxSteps);
-    strokeWeight(s);    
-    
+    strokeWeight(s);
+
     let leafOutlineColor = lerpColor(
       this.outlineColor.start,
       this.outlineColor.end,
@@ -68,23 +74,23 @@ class Leaf {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SubLeaf extends Leaf {
   constructor(name, x, y) {
-    super(x, y);
-    this.x = x;
-    this.y = y;
+    super();
     this.width = 10;
     this.height = 10;
     this.name = name;
     this.setToInitial();
   }
 
-  setToInitial() {
+  setToInitial(x=0, y=0) {
+    this.x = x;
+    this.y = y;
     this.currentStep = maxSteps;
-    this.color = {start: color("IndianRed"), end: color("DarkRed")};
-    this.outlineColor = {start: color("Chartreuse"), end: color("DarkGreen")};
+    this.color = { start: color("IndianRed"), end: color("DarkRed") };
+    this.outlineColor = { start: color("Chartreuse"), end: color("DarkGreen") };
   }
 
   draw() {
-    if (this.currentStep > 0) {      
+    if (this.currentStep > 0) {
       this.fadeLeaf();
     }
 

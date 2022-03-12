@@ -7,12 +7,8 @@ function setup() {
   frameRate(30);
   rectMode(CENTER);
   background(50);
-
-  const spaceDimToDrawLeafs = canvasSize / 3;
   for (let i = 0; i < maxLeafs; i++) {
-    const x = random(-spaceDimToDrawLeafs, spaceDimToDrawLeafs);
-    const y = random(-spaceDimToDrawLeafs, spaceDimToDrawLeafs);
-    leafs.push(new Leaf(x, y));
+    leafs.push(new Leaf());
   }
 }
 
@@ -24,8 +20,9 @@ function draw() {
 
 function mousePressed() {
   background(50);
+  const spaceDimToDrawLeafs = canvasSize / 3;
   leafs.forEach((l) => {
-    l.setToInitial();
+    l.setToInitial(mouseX ,mouseY);
   });
   loop();
 }

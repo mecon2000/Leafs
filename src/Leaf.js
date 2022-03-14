@@ -3,10 +3,10 @@ const maxSteps = 50;
 let runOnce = false;
 
 class Leaf {
-  constructor() {
+  constructor(loc,branchAngle) {
     this.width = 35;
     this.height = 55;
-    this.setToInitial();
+    this.setToInitial(loc,branchAngle);
     this.subLeafs = [];
     this.color = { start: color("PaleGreen"), end: color("PaleGoldenrod") };
     this.outlineColor = { start: color("Chartreuse"), end: color("DarkGreen") };
@@ -14,11 +14,13 @@ class Leaf {
     this.name = "master";
   }
 
-  setToInitial(x=0, y=0) {
+  setToInitial(location=createVector(0,0),branchAngle) {
+    console.log(degrees(branchAngle))
     this.currentStep = maxSteps;
-    this.stemAngle = radians(random(-45, -135));
+    const side = random([60,  -60])
+    this.stemAngle = radians(degrees(branchAngle) + side + random(-45, +45));
     this.leafAngle = radians(random(80, 110));
-    this.stemStart = createVector(x, y);
+    this.stemStart = location
 
     let v = p5.Vector.fromAngle(this.stemAngle, 50);
     this.stemEnd = p5.Vector.add(this.stemStart, v);
@@ -26,9 +28,9 @@ class Leaf {
 
   draw() {
     if (!runOnce) {
-      this.subLeafs.push(new SubLeaf("son1", 38, random(-7, 7)));
-      this.subLeafs.push(new SubLeaf("son2", -38, random(-7, 7)));
-      this.subLeafs.push(new SubLeaf("son3", random(-7, 7), -50));
+      this.subLeafs.push(new SubLeaf("son1",createVector(38, random(-7, 7))));
+      this.subLeafs.push(new SubLeaf("son2",createVector(-38, random(-7, 7))));
+      this.subLeafs.push(new SubLeaf("son3",createVector(random(-7, 7), -50)));
       runOnce = true;
     }
 
@@ -73,17 +75,16 @@ class Leaf {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SubLeaf extends Leaf {
-  constructor(name, x, y) {
+  constructor(name, location) {
     super();
     this.width = 10;
     this.height = 10;
     this.name = name;
-    this.setToInitial(x,y);
+    this.setToInitial(location);
   }
 
-  setToInitial(x=0, y=0) {
-    this.x = x;
-    this.y = y;
+  setToInitial(location = createVector(0,0)) {
+    this.location = location
     this.currentStep = maxSteps;
     this.color = { start: color("IndianRed"), end: color("DarkRed") };
     this.outlineColor = { start: color("Chartreuse"), end: color("DarkGreen") };
@@ -95,8 +96,9 @@ class SubLeaf extends Leaf {
     }
 
     push();
-    translate(this.x, this.y);
+    translate(this.location);
     rect(0, 0, this.width, this.height, 3, 3, 3, 3);
+    console.log(this.name)
     pop();
   }
 }

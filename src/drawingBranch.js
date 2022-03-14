@@ -1,11 +1,11 @@
 //consts:
-let trail = [];
+let leafs = [];
 const canvasSize = 800;
 const maximumLeafs = 10;
 
 //colors consts:
-let backgroundColor; 
-let branchColor; 
+let backgroundColor;
+let branchColor;
 const minBranchWidth = 1;
 const maxBranchWidth = 7;
 
@@ -14,17 +14,21 @@ let currentMinimumDistance = 0;
 
 function setup() {
   //setting consts which cannot be initialized on global scope (it's a p5.js thing)
-  backgroundColor= color('#F5C67B');
-  branchColor =color("green")
+  backgroundColor = color("#F5C67B");
+  branchColor = color("green");
 
   createCanvas(canvasSize, canvasSize);
   frameRate(10);
-  rectMode(CENTER);    
+  rectMode(CENTER);
   stroke(branchColor);
-  background(backgroundColor);  
+  background(backgroundColor);
 }
 
-function draw() {}
+function draw() {
+  leafs.forEach((l) => {
+    l?.leaf?.draw();
+  });
+}
 
 // const throttle = (func, limit) => {
 //   let lastFunc;
@@ -51,35 +55,42 @@ function draw() {}
 
 function mousePressed() {
   background(backgroundColor);
-  trail = [];
+  leafs = [];
 }
 
 function setBranchWidth() {
   const weight = lerp(
     maxBranchWidth,
     minBranchWidth,
-    trail.length / maximumLeafs
+    leafs.length / maximumLeafs
   );
   strokeWeight(weight);
 }
 
+function getLineAngle(v1,v2)
+{
+  const v3 = createVector(v2.x-v1.x, v2.y-v1.y);  
+  const angle = v3.heading();
+  return angle;
+}
+
 function mouseDragged() {
-  const curr = createVector(mouseX, mouseY);
-  if (trail.length != 0) {
-    const prev = trail[trail.length - 1];
+  const currLoc = createVector(mouseX, mouseY);
+  if (leafs.length != 0) {
+    const prevLeaf = leafs[leafs.length - 1];
     if (
-      trail.length < maximumLeafs &&
-      curr.dist(prev) > currentMinimumDistance
+      leafs.length < maximumLeafs &&
+      currLoc.dist(prevLeaf.loc) > currentMinimumDistance
     ) {
       setBranchWidth();
-      line(prev.x, prev.y, curr.x, curr.y);
-      trail.push(curr);
-      rect(curr.x, curr.y, 30, 30);
+      line(prevLeaf.loc.x, prevLeaf.loc.y, currLoc.x, currLoc.y);
+      const angle = getLineAngle(prevLeaf.loc, currLoc);
+      leafs.push({ loc: currLoc, leaf: new Leaf(currLoc,angle) });
       currentMinimumDistance = random(30, 120);
     }
   } else {
     //first time:
-    trail.push(curr);
+    leafs.push({ loc: currLoc });
     currentMinimumDistance = random(40, 120);
   }
 

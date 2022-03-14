@@ -1,16 +1,27 @@
+//consts:
 let trail = [];
-const maxLeafs = 1;
 const canvasSize = 800;
-let currentMinimumDistance = 0
+const maximumLeafs = 10;
+
+//colors consts:
+let backgroundColor; 
+let branchColor; 
+const minBranchWidth = 1;
+const maxBranchWidth = 7;
+
+//globals :
+let currentMinimumDistance = 0;
 
 function setup() {
+  //setting consts which cannot be initialized on global scope (it's a p5.js thing)
+  backgroundColor= color('#F5C67B');
+  branchColor =color("green")
+
   createCanvas(canvasSize, canvasSize);
   frameRate(10);
-  rectMode(CENTER);
-  background(50);
-  stroke("green");
-  strokeWeight(4);
-  rectMode(CENTER);
+  rectMode(CENTER);    
+  stroke(branchColor);
+  background(backgroundColor);  
 }
 
 function draw() {}
@@ -39,24 +50,38 @@ function draw() {}
 // const throttledRect = throttle((x,y)=>{rect(x,y, 30,30)}, 100);
 
 function mousePressed() {
-  background(50);
-  trail = []
+  background(backgroundColor);
+  trail = [];
+}
+
+function setBranchWidth() {
+  const weight = lerp(
+    maxBranchWidth,
+    minBranchWidth,
+    trail.length / maximumLeafs
+  );
+  strokeWeight(weight);
 }
 
 function mouseDragged() {
   const curr = createVector(mouseX, mouseY);
   if (trail.length != 0) {
     const prev = trail[trail.length - 1];
-    if (curr.dist(prev) > currentMinimumDistance) {
+    if (
+      trail.length < maximumLeafs &&
+      curr.dist(prev) > currentMinimumDistance
+    ) {
+      setBranchWidth();
       line(prev.x, prev.y, curr.x, curr.y);
       trail.push(curr);
-      rect(curr.x, curr.y, 30,30);
-      currentMinimumDistance = random(30,250);
+      rect(curr.x, curr.y, 30, 30);
+      currentMinimumDistance = random(30, 120);
     }
-  } else {  //first time
+  } else {
+    //first time:
     trail.push(curr);
-    rect(curr.x, curr.y, 30,30);
-    currentMinimumDistance = random(30,250);  }
+    currentMinimumDistance = random(40, 120);
+  }
 
   //throttledRect(curr.x, curr.y);
 }

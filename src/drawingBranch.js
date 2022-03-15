@@ -22,9 +22,12 @@ function setup() {
   rectMode(CENTER);
   stroke(branchColor);
   background(backgroundColor);
+  textSize(canvasSize / 30);
+  textAlign(CENTER);
 }
 
 function draw() {
+  text('drag the mouse over the screen', canvasSize/2, 35);
   leafs.forEach((l) => {
     l?.leaf?.draw();
   });

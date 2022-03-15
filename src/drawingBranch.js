@@ -26,35 +26,22 @@ function setup() {
   textAlign(CENTER);
 }
 
-function draw() {
+function writeInstructions() {
+  push()
+  stroke('white')
+  strokeWeight(1)
+  fill('black')
   text('drag the mouse over the screen', canvasSize/2, 35);
+  pop()
+}
+
+function draw() {
+  writeInstructions()
+  
   leafs.forEach((l) => {
     l?.leaf?.draw();
   });
 }
-
-// const throttle = (func, limit) => {
-//   let lastFunc;
-//   let lastRan;
-//   return function() {
-//     const context = this;
-//     const args = arguments;
-//     if (!lastRan) {
-//       func.apply(context, args)
-//       lastRan = Date.now();
-//     } else {
-//       clearTimeout(lastFunc);
-//       lastFunc = setTimeout(function() {
-//           if ((Date.now() - lastRan) >= limit) {
-//             func.apply(context, args);
-//             lastRan = Date.now();
-//           }
-//        }, limit - (Date.now() - lastRan));
-//     }
-//   }
-// }
-
-// const throttledRect = throttle((x,y)=>{rect(x,y, 30,30)}, 100);
 
 function setBranchWidth() {
   const weight = lerp(
@@ -96,6 +83,4 @@ function mouseDragged() {
     leafs.push({ loc: currLoc });
     currentMinimumDistance = random(40, 120);
   }
-
-  //throttledRect(curr.x, curr.y);
 }

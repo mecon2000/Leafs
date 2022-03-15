@@ -15,10 +15,10 @@ let currentMinimumDistance = 0;
 function setup() {
   //setting consts which cannot be initialized on global scope (it's a p5.js thing)
   backgroundColor = color("#F5C67B");
-  branchColor = color("green");
+  branchColor = color("white");
 
   createCanvas(canvasSize, canvasSize);
-  frameRate(10);
+  frameRate(30);
   rectMode(CENTER);
   stroke(branchColor);
   background(backgroundColor);
@@ -53,11 +53,6 @@ function draw() {
 
 // const throttledRect = throttle((x,y)=>{rect(x,y, 30,30)}, 100);
 
-function mousePressed() {
-  background(backgroundColor);
-  leafs = [];
-}
-
 function setBranchWidth() {
   const weight = lerp(
     maxBranchWidth,
@@ -72,6 +67,11 @@ function getLineAngle(v1,v2)
   const v3 = createVector(v2.x-v1.x, v2.y-v1.y);  
   const angle = v3.heading();
   return angle;
+}
+
+function mousePressed() {
+  leafs = []
+  background(backgroundColor);
 }
 
 function mouseDragged() {

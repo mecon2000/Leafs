@@ -1,6 +1,5 @@
 const initialStroke = 5;
 const maxSteps = 50;
-
 class Leaf {
   constructor(loc, branchAngle) {
     this.width = 35;
@@ -13,10 +12,10 @@ class Leaf {
   }
 
   setToInitial(location = createVector(0, 0), branchAngle) {
-    this.subLeafs = [];
-    this.subLeafs.push(new SubLeaf("son1", createVector(38, random(-7, 7))));
-    this.subLeafs.push(new SubLeaf("son2", createVector(-38, random(-7, 7))));
-    this.subLeafs.push(new SubLeaf("son3", createVector(random(-7, 7), -50)));
+    this.subLeaves = [];
+    this.subLeaves.push(new SubLeaf("son1", createVector(38, random(-7, 7))));
+    this.subLeaves.push(new SubLeaf("son2", createVector(-38, random(-7, 7))));
+    this.subLeaves.push(new SubLeaf("son3", createVector(random(-7, 7), -50)));
 
     this.currentStep = maxSteps;
     const side = random([60, -60]);
@@ -43,7 +42,7 @@ class Leaf {
     translate(this.stemEnd);
     rotate(this.stemAngle + this.leafAngle);
     rect(0, 0, this.width, this.height, 15, 15, 5, 5);
-    this.subLeafs.forEach((l) => l.draw());
+    this.subLeaves.forEach((l) => l.draw());
     pop();
   }
 

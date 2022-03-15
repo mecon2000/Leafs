@@ -1,7 +1,7 @@
 //consts:
-let leafs = [];
+let leaves = [];
 const canvasSize = 800;
-const maximumLeafs = 10;
+const maximumLeaves = 10;
 
 //colors consts:
 let backgroundColor;
@@ -38,7 +38,7 @@ function writeInstructions() {
 function draw() {
   writeInstructions()
   
-  leafs.forEach((l) => {
+  leaves.forEach((l) => {
     l?.leaf?.draw();
   });
 }
@@ -47,7 +47,7 @@ function setBranchWidth() {
   const weight = lerp(
     maxBranchWidth,
     minBranchWidth,
-    leafs.length / maximumLeafs
+    leaves.length / maximumLeaves
   );
   strokeWeight(weight);
 }
@@ -60,27 +60,27 @@ function getLineAngle(v1,v2)
 }
 
 function mousePressed() {
-  leafs = []
+  leaves = []
   background(backgroundColor);
 }
 
 function mouseDragged() {
   const currLoc = createVector(mouseX, mouseY);
-  if (leafs.length != 0) {
-    const prevLeaf = leafs[leafs.length - 1];
+  if (leaves.length != 0) {
+    const prevLeaf = leaves[leaves.length - 1];
     if (
-      leafs.length < maximumLeafs &&
+      leaves.length < maximumLeaves &&
       currLoc.dist(prevLeaf.loc) > currentMinimumDistance
     ) {
       setBranchWidth();
       line(prevLeaf.loc.x, prevLeaf.loc.y, currLoc.x, currLoc.y);
       const angle = getLineAngle(prevLeaf.loc, currLoc);
-      leafs.push({ loc: currLoc, leaf: new Leaf(currLoc,angle) });
+      leaves.push({ loc: currLoc, leaf: new Leaf(currLoc,angle) });
       currentMinimumDistance = random(30, 120);
     }
   } else {
     //first time:
-    leafs.push({ loc: currLoc });
+    leaves.push({ loc: currLoc });
     currentMinimumDistance = random(40, 120);
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "leafs",
+  "name": "leaves",
   "version": "1.0.0",
-  "description": "drawing leafs using p5js",
+  "description": "drawing leaves using p5js",
   "main": "drawingBranch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mecon2000/Leafs.git"
+    "url": "git+https://github.com/mecon2000/Leaves.git"
   },
   "keywords": [
     "p5js"
@@ -17,7 +17,7 @@
   "author": "Mecon2000",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mecon2000/Leafs/issues"
+    "url": "https://github.com/mecon2000/Leaves/issues"
   },
-  "homepage": "https://github.com/mecon2000/Leafs#readme"
+  "homepage": "https://github.com/mecon2000/Leaves#readme"
 }
